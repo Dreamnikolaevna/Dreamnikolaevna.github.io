@@ -1,0 +1,40 @@
+body {
+  margin: 40px auto;
+  max-width: 650px;
+  line-height: 1.6;
+  font-size: 18px;
+  color: #444;
+  padding: 0 10px
+}
+
+h1, h2, h3 {
+  line-height: 1.2
+}
+
+input {
+  transition-duration: 0.4s;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+  background-color: #326273;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  padding: 8px 16px;
+}
+
+input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
+  background-color: #47A8BD;
+}
+
+input[type=text], input[type=password], input[type=number] {
+  border: 2px solid #326273;
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=number]:focus,
+input[type=text]:active, input[type=password]:active, input[type=number]:active
+{
+  border-color: #47A8BD;
+}
