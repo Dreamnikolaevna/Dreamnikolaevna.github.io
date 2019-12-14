@@ -1,6 +1,6 @@
 <?php
 $login = $_POST['login'];
-$pwd = $_POST['pwd'];
+$pwd = crypt($_POST['pwd'], "asfsfrwf");
 $msg = "Здравствуйте, " . $login . "! Ваш пароль: " . $pwd;
 echo $msg;
 ?>

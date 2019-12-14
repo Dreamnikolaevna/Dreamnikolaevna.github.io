@@ -7,29 +7,35 @@
   <link href="style.css" rel="stylesheet">
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
+
   <script>
     function formSumbit(register) {
+      $('#formResult').html("Загрузка...");
       var login = $("#login").val();
       var pwd = $("#pwd").val();
-      if (register) {
-        $.post("register.php", {login: login, pwd: pwd},
-          function(data) { $('#formResult').html(data); });
-      } else {
-        $.post("login.php", {login: login, pwd: pwd},
-          function(data) {
-            $('#formResult').html(data);
-            $('#loginForm')[0].reset();
-          });
+      if (login == "") { alert("Пустой логин!") }
+      else if (pwd == "") { alert("Пустой пароль!") }
+      else {
+        var php = "login.php"
+        if (register) { php = "register.php" }
+        $.post(php, {login: login, pwd: pwd},
+          function(data) { $('#formResult').html(data); })
       }
     }
+
+    $(document).ready(function() {
+      $("#loginForm").keydown(function(e) {
+        if (e.which == 13) { formSumbit(false); }
+    })});
   </script>
+
   <style>
     p.label { margin: 3px auto; }
   </style>
 </head>
 
 <body>
-  <form id="loginForm" method="post"> <table>
+  <form id="loginForm" onsubmit="formSumbit(false)" method="post"> <table>
     <tr>
       <td> <p class="label">Логин</p> </td> <td> <input type="text" id="login"> </td>
     </tr>
