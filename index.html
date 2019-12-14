@@ -8,25 +8,40 @@
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script>
-    function loginSumbit() {
+    function formSumbit(register) {
       var login = $("#login").val();
       var pwd = $("#pwd").val();
-      $.post("login.php", {login: login, pwd: pwd},
-      function(data) {
-        $('#loginResult').html(data);
-        $('#loginForm')[0].reset();
-      });
+      if (register) {
+        $.post("register.php", {login: login, pwd: pwd},
+          function(data) { $('#formResult').html(data); });
+      } else {
+        $.post("login.php", {login: login, pwd: pwd},
+          function(data) {
+            $('#formResult').html(data);
+            $('#loginForm')[0].reset();
+          });
+      }
     }
   </script>
+  <style>
+    p.label { margin: 3px auto; }
+  </style>
 </head>
 
 <body>
-  <form id="loginForm" method="post">
-    <p>Логин: <input type="text" id="login"></p>
-    <p>Пароль: <input type="password" id="pwd"></p>
-    <p><input type="button" onclick="loginSumbit();" value="Отправить"></p>
-  </form>
-  <div id="loginResult"></div>
+  <form id="loginForm" method="post"> <table>
+    <tr>
+      <td> <p class="label">Логин</p> </td> <td> <input type="text" id="login"> </td>
+    </tr>
+    <tr>
+      <td> <p class="label">Пароль</p> </td> <td> <input type="password" id="pwd"> </td>
+    </tr>
+    <tr>
+      <td> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
+      <td> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
+    </tr>
+  </table> </form>
+  <div id="formResult"></div>
 </body>
 
 </html>
