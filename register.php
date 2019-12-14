@@ -12,12 +12,13 @@ $pwd = crypt($_POST['pwd'], "asfsfrwf");
 $link = mysqli_connect("localhost", "root", "", "credentials");
 $query = mysqli_query($link, "SELECT id FROM users WHERE login='" . mysqli_real_escape_string($link, $login) . "'");
 if (mysqli_num_rows($query) > 0) {
-  $msg = "Пользователь " . $login . " уже существует в базе данных";
+  $msg = "Пользователь " . $login . " уже зарегестрирован";
 } else {
-  if (!mysqli_query($link, "INSERT INTO users SET login='" . $login . "', pwd='" . $password . "'")) {
+  if (!mysqli_query($link, "INSERT INTO users SET login='" . $login . "', pwd='" . $pwd . "'")) {
     $msg = "Создать пользователя " . $login . " не удалось";
   } else {
-    $msg = "Пользователь " . $login . " зарегестрирован";
+    setcookie("login", $login, 0, "/");
+    $msg = "<script> location.reload(true); </script>";
   }
 }
 echo $msg
