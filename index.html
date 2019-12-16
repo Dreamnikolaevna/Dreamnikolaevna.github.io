@@ -7,16 +7,17 @@
   <link href="style.css" rel="stylesheet">
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="jquery.cookie.js"></script>
 
   <script>
     function formSumbit(register) {
-      $('#formResult').html("Загрузка...");
       var login = $("#login").val();
       var pwd = $("#pwd").val();
       if (login == "") { alert("Пустой логин!") }
       else if (pwd == "") { alert("Пустой пароль!") }
       else {
-        var php = "login.php"
+        $('#formResult').html("Загрузка...");
+        var php = "login.php";
         if (register) { php = "register.php" }
         $.post(php, {login: login, pwd: pwd},
           function(data) { $('#formResult').html(data); })
@@ -24,9 +25,15 @@
     }
 
     $(document).ready(function() {
+      var login = $.cookie('login');
+      if (login != null) {
+        $(".loginForm").hide();
+        $("#showLogin").html(`Вы вошли как ${login}`);
+      } else {
+        $(".logined").hide();
+      }
       $("#loginForm").keydown(function(e) {
         if (e.which == 13) { formSumbit(false); }});
-      
     });
   </script>
 
@@ -36,7 +43,13 @@
 </head>
 
 <body>
-  <form id="loginForm" onsubmit="formSumbit(false)" method="post"> <table>
+  <div class="logined">
+    <table width="100%"> <tr>
+      <td id="showLogin"></td>
+      <td align=right> <input type="button" onclick="$.removeCookie('login'); location = location;" value="Выйти"> </td>
+    </tr> </table>
+  </div>
+  <form id="loginForm" class="loginForm" onsubmit="formSumbit(false)" method="post"> <table>
     <tr>
       <td> <p class="label">Логин</p> </td> <td> <input type="text" id="login"> </td>
     </tr>
@@ -48,7 +61,7 @@
       <td> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
     </tr>
   </table> </form>
-  <div id="formResult"></div>
+  <div id="formResult" class="loginForm"></div>
 </body>
 
 </html>
