@@ -17,9 +17,7 @@
       else if (pwd == "") { alert("Пустой пароль!") }
       else {
         $('#formResult').html("Загрузка...");
-        var php = "login.php";
-        if (register) { php = "register.php" }
-        $.post(php, {login: login, pwd: pwd},
+        $.post("auth.php", {login: login, pwd: pwd, register: register},
           function(data) { $('#formResult').html(data); })
       }
     }
