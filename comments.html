@@ -8,7 +8,19 @@
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script>
-    $(() => { $("#header").load("header.html"); });
+    $(() => {
+      $("#header").load("header.html");
+      $.post("fetch_comment.php", {},
+        (data) => {
+          let comments = $.parseJSON(data);
+          $.each(comments, (i, item) => {
+            let $tr = $('<tr>').append(
+                $('<td>').text(item[1] + ':'),
+                $('<td>').text(item[2])
+              ).appendTo('#comments-table');
+          })
+        })
+      });
 
     function sendComment() {
       let text = $("#comment-text").val();
@@ -29,9 +41,9 @@
 
 <body>
   <header id="header"></header>
-  <div class="comments"></div>
+  <div class="comments"><table id="comments-table"></table></div>
   <div class="not-logined">
-    <p> Комментарии доступны только зарегестрированным пользователям </p>
+    <p> Комментирование доступно только зарегестрированным пользователям </p>
   </div>
   <div class="add-comment logined">
     <form onsubmit="formSumbit(false)" method="post">
