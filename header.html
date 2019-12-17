@@ -1,0 +1,54 @@
+<script src="jquery.cookie.js"></script>
+<script src="session.js"></script>
+
+<script>
+  function formSumbit(register) {
+    let login = $("#login").val();
+    let pwd = $("#pwd").val();
+    if (login == "") alert("Пустой логин!");
+    else if (pwd == "") alert("Пустой пароль!");
+    else {
+      $('#formResult').html("Загрузка...");
+      $.post("auth.php", {login: login, pwd: pwd, register: register},
+        (data) => { $('#formResult').html(data); })
+    }
+  }
+
+  function logout() {
+    $.removeCookie('login');
+    killSession();
+    location = location;
+  }
+
+  $("#header-wrap").ready(function() {
+    let login = $.cookie('login');
+    if (login != null) {
+      $(".loginForm").hide();
+      $("#showLogin").html(`Вы вошли как ${login}`);
+    } else {
+      $(".logined").hide();
+    }
+    $("#loginForm").keydown((e) => { if (e.which == 13) formSumbit(false); }); // отправка формы по Enter
+    getSession().then(session => { if (!session['admin']) $(".admin").hide(); }); // админские функции
+  });
+</script>
+
+<div id="header-wrap">
+  <style>
+    p.label { margin: 3px auto; }
+  </style>
+  <table width="100%"> <tr>
+    <td class="logined" id="showLogin"></td>
+    <td class="admin"> <input type="button" value="Кнопка для админа"> </td>
+    <td class="logined" align=right> <input type="button" onclick="logout()" value="Выйти"> </td>
+    <form id="loginForm" onsubmit="formSumbit(false)" method="post">
+      <td class="loginForm"> <p class="label">Логин</p> </td>
+      <td class="loginForm"> <input type="text" id="login"> </td>
+      <td class="loginForm"> <p class="label">Пароль</p> </td>
+      <td class="loginForm"> <input type="password" id="pwd"> </td>
+      <td class="loginForm"> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
+      <td class="loginForm"> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
+    </form>
+  </tr> </table>
+  <div id="formResult" class="loginForm"></div>
+</div>
