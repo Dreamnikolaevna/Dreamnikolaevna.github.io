@@ -27,14 +27,19 @@ input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
   background-color: #47A8BD;
 }
 
-input[type=text], input[type=password], input[type=number] {
+input[type=button]:disabled, input[type=submit]:disabled, input[type=reset]:disabled {
+  background-color: #1D444D;
+}
+
+input[type=text], input[type=password], input[type=number], textarea {
   border: 2px solid #326273;
   border-radius: 4px;
   outline: none;
 }
 
 input[type=text]:focus, input[type=password]:focus, input[type=number]:focus,
-input[type=text]:active, input[type=password]:active, input[type=number]:active
+input[type=text]:active, input[type=password]:active, input[type=number]:active,
+textarea:focus, textarea:active
 {
   border-color: #47A8BD;
 }

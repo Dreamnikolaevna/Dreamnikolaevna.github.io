@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="style.css" rel="stylesheet">
+  <title>ИУ4-12Б супер крутой сайт 2000</title>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script>
+    $(() => { $("#header").load("header.html"); });
+
+    function sendComment() {
+      let text = $("#comment-text").val();
+      if (text == "") alert("Пустой комментарий!");
+      else {
+        $("#comment-button").val("Отправка...");
+        $("#comment-button").prop('disabled', true);
+        $.post("comment.php", {text: text});
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <header id="header"></header>
+  <div class="comments"></div>
+  <div class="not-logined">
+    <p> Комментарии доступны только зарегестрированным пользователям </p>
+  </div>
+  <div class="add-comment logined">
+    <form onsubmit="formSumbit(false)" method="post">
+      <textarea id="comment-text" rows="8" cols="80" placeholder="Комментарий" required></textarea>
+      <input id="comment-button" type="button" onclick="sendComment()" value="Отправить">
+    </form>
+  </div>
+</body>
+
+</html>

@@ -23,7 +23,7 @@
   $("#header-wrap").ready(function() {
     let login = $.cookie('login');
     if (login != null) {
-      $(".loginForm").hide();
+      $(".not-logined").hide();
       $("#showLogin").html(`Вы вошли как ${login}`);
     } else {
       $(".logined").hide();
@@ -38,17 +38,18 @@
     p.label { margin: 3px auto; }
   </style>
   <table width="100%"> <tr>
+    <td> <input type="button" onclick="location='index.html'" value="На главную"> </td>
     <td class="logined" id="showLogin"></td>
     <td class="admin"> <input type="button" value="Кнопка для админа"> </td>
     <td class="logined" align=right> <input type="button" onclick="logout()" value="Выйти"> </td>
     <form id="loginForm" onsubmit="formSumbit(false)" method="post">
-      <td class="loginForm"> <p class="label">Логин</p> </td>
-      <td class="loginForm"> <input type="text" id="login"> </td>
-      <td class="loginForm"> <p class="label">Пароль</p> </td>
-      <td class="loginForm"> <input type="password" id="pwd"> </td>
-      <td class="loginForm"> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
-      <td class="loginForm"> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
+      <td class="not-logined"> <p class="label">Логин</p> </td>
+      <td class="not-logined"> <input type="text" id="login"> </td>
+      <td class="not-logined"> <p class="label">Пароль</p> </td>
+      <td class="not-logined"> <input type="password" id="pwd"> </td>
+      <td class="not-logined"> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
+      <td class="not-logined"> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
     </form>
   </tr> </table>
-  <div id="formResult" class="loginForm"></div>
+  <div id="formResult" class="not-logined"></div>
 </div>
