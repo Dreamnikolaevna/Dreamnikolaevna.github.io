@@ -16,7 +16,12 @@
       else {
         $("#comment-button").val("Отправка...");
         $("#comment-button").prop('disabled', true);
-        $.post("comment.php", {text: text});
+        $.post("send_comment.php", {text: text},
+          (data) => {
+            $("#comment-result").html(data);
+            $("#comment-button").val("Отправить");
+            $("#comment-button").prop('disabled', false);
+          });
       }
     }
   </script>
@@ -33,6 +38,7 @@
       <textarea id="comment-text" rows="8" cols="80" placeholder="Комментарий" required></textarea>
       <input id="comment-button" type="button" onclick="sendComment()" value="Отправить">
     </form>
+    <div id="comment-result"></div>
   </div>
 </body>
 
