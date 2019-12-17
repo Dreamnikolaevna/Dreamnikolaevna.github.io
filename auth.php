@@ -7,8 +7,13 @@ $login = $_POST['login'];
 $pwd = crypt($_POST['pwd'], "asfsfrwf");
 $link = mysqli_connect("localhost", "root", "", "credentials");
 
+session_start();
+$_SESSION['login'] = NULL;
+$_SESSION['admin'] = false;
 
-function set_cookie($login) {
+function set_user($login) {
+  $_SESSION['login'] = $login;
+  $_SESSION['admin'] = ($login == "admin");
   setcookie("login", $login, 0, "/");
   return "<script> location.reload(true); </script>"; // перезагрузить с новым куки
 }
@@ -18,7 +23,7 @@ function login($link, $login, $pwd) {
   $query = mysqli_query($link, "SELECT pwd FROM users WHERE login='" . mysqli_real_escape_string($link, $login) . "' LIMIT 1");
   $data = mysqli_fetch_assoc($query);
   if ($pwd == $data['pwd'])
-    return set_cookie($login);
+    return set_user($login);
   else
     return "Неверный логин или пароль";
 }
@@ -31,7 +36,7 @@ function register($link, $login, $pwd) {
   if (!mysqli_query($link, "INSERT INTO users SET login='" . $login . "', pwd='" . $pwd . "'"))
     return "Создать пользователя " . $login . " не удалось";
   else
-    return set_cookie($login);
+    return set_user($login);
 }
 
 

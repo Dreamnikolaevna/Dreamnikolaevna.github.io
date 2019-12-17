@@ -8,30 +8,37 @@
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
   <script src="jquery.cookie.js"></script>
+  <script src="session.js"></script>
 
   <script>
     function formSumbit(register) {
-      var login = $("#login").val();
-      var pwd = $("#pwd").val();
-      if (login == "") { alert("Пустой логин!") }
-      else if (pwd == "") { alert("Пустой пароль!") }
+      let login = $("#login").val();
+      let pwd = $("#pwd").val();
+      if (login == "") alert("Пустой логин!");
+      else if (pwd == "") alert("Пустой пароль!");
       else {
         $('#formResult').html("Загрузка...");
         $.post("auth.php", {login: login, pwd: pwd, register: register},
-          function(data) { $('#formResult').html(data); })
+          (data) => { $('#formResult').html(data); })
       }
     }
 
+    function logout() {
+      $.removeCookie('login');
+      killSession();
+      location = location;
+    }
+
     $(document).ready(function() {
-      var login = $.cookie('login');
+      let login = $.cookie('login');
       if (login != null) {
         $(".loginForm").hide();
         $("#showLogin").html(`Вы вошли как ${login}`);
       } else {
         $(".logined").hide();
       }
-      $("#loginForm").keydown(function(e) {
-        if (e.which == 13) { formSumbit(false); }});
+      $("#loginForm").keydown((e) => { if (e.which == 13) formSumbit(false); }); // отправка формы по Enter
+      //getSession().then(session => alert(session['admin']));
     });
   </script>
 
@@ -44,7 +51,7 @@
   <div class="logined">
     <table width="100%"> <tr>
       <td id="showLogin"></td>
-      <td align=right> <input type="button" onclick="$.removeCookie('login'); location = location;" value="Выйти"> </td>
+      <td align=right> <input type="button" onclick="logout()" value="Выйти"> </td>
     </tr> </table>
   </div>
   <form id="loginForm" class="loginForm" onsubmit="formSumbit(false)" method="post"> <table>
