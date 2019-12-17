@@ -8,8 +8,6 @@ $pwd = crypt($_POST['pwd'], "asfsfrwf");
 $link = mysqli_connect("localhost", "root", "", "credentials");
 
 session_start();
-$_SESSION['login'] = NULL;
-$_SESSION['admin'] = false;
 
 function set_user($login) {
   $_SESSION['login'] = $login;

@@ -7,66 +7,63 @@
   <link href="style.css" rel="stylesheet">
   <title>ИУ4-12Б супер крутой сайт 2000</title>
   <script src="http://code.jquery.com/jquery-latest.js"></script>
-  <script src="jquery.cookie.js"></script>
-  <script src="session.js"></script>
-
-  <script>
-    function formSumbit(register) {
-      let login = $("#login").val();
-      let pwd = $("#pwd").val();
-      if (login == "") alert("Пустой логин!");
-      else if (pwd == "") alert("Пустой пароль!");
-      else {
-        $('#formResult').html("Загрузка...");
-        $.post("auth.php", {login: login, pwd: pwd, register: register},
-          (data) => { $('#formResult').html(data); })
-      }
-    }
-
-    function logout() {
-      $.removeCookie('login');
-      killSession();
-      location = location;
-    }
-
-    $(document).ready(function() {
-      let login = $.cookie('login');
-      if (login != null) {
-        $(".loginForm").hide();
-        $("#showLogin").html(`Вы вошли как ${login}`);
-      } else {
-        $(".logined").hide();
-      }
-      $("#loginForm").keydown((e) => { if (e.which == 13) formSumbit(false); }); // отправка формы по Enter
-      //getSession().then(session => alert(session['admin']));
-    });
-  </script>
-
   <style>
     p.label { margin: 3px auto; }
   </style>
 </head>
 
 <body>
-  <div class="logined">
+  <header>
+    <script src="jquery.cookie.js"></script>
+    <script src="session.js"></script>
+
+    <script>
+      function formSumbit(register) {
+        let login = $("#login").val();
+        let pwd = $("#pwd").val();
+        if (login == "") alert("Пустой логин!");
+        else if (pwd == "") alert("Пустой пароль!");
+        else {
+          $('#formResult').html("Загрузка...");
+          $.post("auth.php", {login: login, pwd: pwd, register: register},
+            (data) => { $('#formResult').html(data); })
+        }
+      }
+
+      function logout() {
+        $.removeCookie('login');
+        killSession();
+        location = location;
+      }
+
+      $(document).ready(function() {
+        let login = $.cookie('login');
+        if (login != null) {
+          $(".loginForm").hide();
+          $("#showLogin").html(`Вы вошли как ${login}`);
+        } else {
+          $(".logined").hide();
+        }
+        $("#loginForm").keydown((e) => { if (e.which == 13) formSumbit(false); }); // отправка формы по Enter
+        getSession().then(session => { if (!session['admin']) $(".admin").hide(); }); // админские функции
+      });
+    </script>
+
     <table width="100%"> <tr>
-      <td id="showLogin"></td>
-      <td align=right> <input type="button" onclick="logout()" value="Выйти"> </td>
+      <td class="logined" id="showLogin"></td>
+      <td class="admin"> <input type="button" value="Кнопка для админа"> </td>
+      <td class="logined" align=right> <input type="button" onclick="logout()" value="Выйти"> </td>
+      <form id="loginForm" onsubmit="formSumbit(false)" method="post">
+        <td class="loginForm"> <p class="label">Логин</p> </td>
+        <td class="loginForm"> <input type="text" id="login"> </td>
+        <td class="loginForm"> <p class="label">Пароль</p> </td>
+        <td class="loginForm"> <input type="password" id="pwd"> </td>
+        <td class="loginForm"> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
+        <td class="loginForm"> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
+      </form>
     </tr> </table>
-  </div>
-  <form id="loginForm" class="loginForm" onsubmit="formSumbit(false)" method="post"> <table>
-    <tr>
-      <td> <p class="label">Логин</p> </td> <td> <input type="text" id="login"> </td>
-    </tr>
-    <tr>
-      <td> <p class="label">Пароль</p> </td> <td> <input type="password" id="pwd"> </td>
-    </tr>
-    <tr>
-      <td> <input type="button" onclick="formSumbit(false);" value="Войти"> </td>
-      <td> <input type="button" onclick="formSumbit(true);" value="Регистрация"> </td>
-    </tr>
-  </table> </form>
-  <div id="formResult" class="loginForm"></div>
+    <div id="formResult" class="loginForm"></div>
+  </header>
 </body>
 
 </html>
