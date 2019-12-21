@@ -20,13 +20,17 @@
           let comments = $.parseJSON(data);
           $.each(comments, (i, item) => {
             let $tr = $('<tr>').append(
-                $('<td>').text(item[1] + ':'),
-                $('<td>').text(item[2]),
+                $('<td>').html('<b>' + item[1] + '</b>: ' + item[2]),
                 $('<td>', {
                   "class": "admin",
                   align: "right",
-                  click: () => { deleteComment(item[0]); }
-                }).text('[X]')
+                }).append(
+                  $('<input>', {
+                    type: "button",
+                    value: "Удалить",
+                    click: () => { deleteComment(item[0]) }
+                  })
+                )
               ).appendTo('#comments-table');
               getSession().then(session => { if (!session['admin']) $(".admin").hide(); });
           })
@@ -62,7 +66,7 @@
 <body>
   <header id="header"></header>
   <h3>Комментарии</h3>
-  <div class="comments"><table id="comments-table"></table></div>
+  <div class="comments"><table id="comments-table" width="100%"></table></div>
   <div class="not-logined">
     <p> Комментирование доступно только зарегестрированным пользователям </p>
   </div>
