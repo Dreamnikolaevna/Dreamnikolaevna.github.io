@@ -14,7 +14,7 @@
     });
 
     function updateComments() {
-      $.post("fetch_comment.php", {},
+      $.post("comment.php", {action: "fetch"},
         (data) => {
           $('#comments-table').empty();
           let comments = $.parseJSON(data);
@@ -34,7 +34,7 @@
     }
 
     function deleteComment(id) {
-      $.post("delete_comment.php", {id: id},
+      $.post("comment.php", {id: id, action: "delete"},
         (data) => {
           $("#comment-result").html(data);
           updateComments();
@@ -47,7 +47,7 @@
       else {
         $("#comment-button").val("Отправка...");
         $("#comment-button").prop('disabled', true);
-        $.post("send_comment.php", {text: text},
+        $.post("comment.php", {text: text, action: "send"},
           (data) => {
             $("#comment-result").html(data);
             $("#comment-button").val("Отправить");
