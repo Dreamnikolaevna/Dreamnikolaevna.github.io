@@ -10,17 +10,36 @@
   <script>
     $(() => {
       $("#header").load("header.html");
+      updateComments();
+    });
+
+    function updateComments() {
       $.post("fetch_comment.php", {},
         (data) => {
+          $('#comments-table').empty();
           let comments = $.parseJSON(data);
           $.each(comments, (i, item) => {
             let $tr = $('<tr>').append(
                 $('<td>').text(item[1] + ':'),
-                $('<td>').text(item[2])
+                $('<td>').text(item[2]),
+                $('<td>', {
+                  "class": "admin",
+                  align: "right",
+                  click: () => { deleteComment(item[0]); }
+                }).text('[X]')
               ).appendTo('#comments-table');
+              getSession().then(session => { if (!session['admin']) $(".admin").hide(); });
           })
         })
-      });
+    }
+
+    function deleteComment(id) {
+      $.post("delete_comment.php", {id: id},
+        (data) => {
+          $("#comment-result").html(data);
+          updateComments();
+        });
+    }
 
     function sendComment() {
       let text = $("#comment-text").val();
@@ -33,6 +52,7 @@
             $("#comment-result").html(data);
             $("#comment-button").val("Отправить");
             $("#comment-button").prop('disabled', false);
+            updateComments();
           });
       }
     }
@@ -41,13 +61,15 @@
 
 <body>
   <header id="header"></header>
+  <h3>Комментарии</h3>
   <div class="comments"><table id="comments-table"></table></div>
   <div class="not-logined">
     <p> Комментирование доступно только зарегестрированным пользователям </p>
   </div>
   <div class="add-comment logined">
+    <h4> Добавить комментарий: </h4>
     <form onsubmit="formSumbit(false)" method="post">
-      <textarea id="comment-text" rows="8" cols="80" placeholder="Комментарий" required></textarea>
+      <textarea id="comment-text" rows="4" cols="80" placeholder="Комментарий" maxlength="240" required></textarea> <br>
       <input id="comment-button" type="button" onclick="sendComment()" value="Отправить">
     </form>
     <div id="comment-result"></div>
